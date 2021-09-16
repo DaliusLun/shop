@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ParameterController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,6 +21,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
 Route::group(['prefix' => 'categories'], function(){
     Route::get('', [CategoryController::class, 'index'])->name('category.index');
     Route::get('map/{category}', [CategoryController::class, 'map'])->name('category.map');
@@ -31,5 +34,18 @@ Route::group(['prefix' => 'categories'], function(){
     // Route::post('updatePhoto/{category}', [CategoryController::class, 'updatePhoto'])->name('category.updatePhoto');
     Route::get('show/{category}', [CategoryController::class, 'show'])->name('category.show');
  });
+
+ Route::group(['prefix' => 'parameters'], function(){
+    Route::get('', [ParameterController::class, 'index'])->name('parameter.index');
+    // Route::get('map/{parameter}', [ParameterController::class, 'map'])->name('parameter.map');
+    Route::get('create', [ParameterController::class, 'create'])->name('parameter.create');
+    Route::post('store', [ParameterController::class, 'store'])->name('parameter.store');
+    Route::get('edit/{parameter}', [ParameterController::class, 'edit'])->name('parameter.edit');
+    Route::post('update/{parameter}', [ParameterController::class, 'update'])->name('parameter.update');
+    Route::post('delete/{parameter}', [ParameterController::class, 'destroy'])->name('parameter.destroy');
+    Route::get('show/{parameter}', [ParameterController::class, 'show'])->name('parameter.show');
+ });
+
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

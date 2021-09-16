@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\Parameter;
+
 
 class CategoryController extends Controller
 {
@@ -24,7 +26,7 @@ class CategoryController extends Controller
         $chain[] = $categories;
         $_SESSION['chain'] = [];
         
-        return view('categories.index',['categories'=> $categories,'chain'=>$_SESSION['chain']]);
+        return view('category.index',['categories'=> $categories,'chain'=>$_SESSION['chain']]);
     }
 
     public function map(Category $category)
@@ -40,7 +42,7 @@ class CategoryController extends Controller
         $_SESSION['chain'] = $tmpSs;
         $categories = Category::where('category_id','=',$category->id)->get();
         // dd($category->id);
-        return view('categories.index',['categories'=> $categories,'chain'=>$_SESSION['chain']]);
+        return view('category.index',['categories'=> $categories,'chain'=>$_SESSION['chain']]);
     }
     /**
      * Show the form for creating a new resource.
@@ -88,7 +90,10 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        $parameters = Parameter::all();
+        $categories = Category::where('id', '!=', $category->id)->get();
+        return view('category.edit',['category'=> $category, 'parameters'=> $parameters, 'categories'=> $categories]);
+        
     }
 
     /**
@@ -100,7 +105,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $category->name = $request->name;
+        $category->category_id = $request->category_id;
+        $category->save();
+        return redirect()->route('category.index')->with('success_message', 'Sekmingai pakeistas.');
+
     }
 
     /**

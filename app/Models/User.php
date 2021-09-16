@@ -36,7 +36,7 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        if($this->permission_lvl >= 100000) {
+        if($this->permission_lvl >= 0) {
             return true;
         }
         return false;

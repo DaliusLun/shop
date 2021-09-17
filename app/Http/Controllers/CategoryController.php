@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Parameter;
+use App\Models\CategoryParameter;
+
 
 
 class CategoryController extends Controller
@@ -108,6 +110,9 @@ class CategoryController extends Controller
         $category->name = $request->name;
         $category->category_id = $request->category_id;
         $category->save();
+        foreach ($request->parameters as $parameter) {
+            $category->parameters()->attach($parameter);
+        }
         return redirect()->route('category.index')->with('success_message', 'Sekmingai pakeistas.');
 
     }

@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ParameterController;
+use App\Http\Controllers\ItemController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +48,14 @@ Route::group(['prefix' => 'categories'], function(){
     Route::get('show/{parameter}', [ParameterController::class, 'show'])->name('parameter.show');
  });
 
-
+ Route::group(['prefix' => 'items'], function(){
+    Route::get('', [ItemController::class, 'index'])->name('item.index');
+    Route::get('create/{id}', [ItemController::class, 'create'])->name('item.create');
+    Route::post('store', [ItemController::class, 'store'])->name('item.store');
+    Route::get('edit/{item}', [ItemController::class, 'edit'])->name('item.edit');
+    Route::post('update/{item}', [ItemController::class, 'update'])->name('item.update');
+    Route::post('delete/{item}', [ItemController::class, 'destroy'])->name('item.destroy');
+    Route::get('show/{item}', [ItemController::class, 'show'])->name('item.show');
+ });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

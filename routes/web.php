@@ -50,12 +50,13 @@ Route::group(['prefix' => 'categories'], function(){
 
  Route::group(['prefix' => 'items'], function(){
     Route::get('', [ItemController::class, 'index'])->name('item.index');
-    Route::get('create/{id}', [ItemController::class, 'create'])->name('item.create');
+    Route::get('create/{category}', [ItemController::class, 'create'])->name('item.create');
     Route::post('store', [ItemController::class, 'store'])->name('item.store');
-    Route::get('edit/{item}', [ItemController::class, 'edit'])->name('item.edit');
+    Route::get('edit/{item}&{category}', [ItemController::class, 'edit'])->name('item.edit');
     Route::post('update/{item}', [ItemController::class, 'update'])->name('item.update');
     Route::post('delete/{item}', [ItemController::class, 'destroy'])->name('item.destroy');
     Route::get('show/{item}', [ItemController::class, 'show'])->name('item.show');
  });
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

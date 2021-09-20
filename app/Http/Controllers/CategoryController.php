@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Parameter;
+use App\Models\Item;
 use App\Models\CategoryParameter;
-
-
 
 class CategoryController extends Controller
 {
@@ -43,8 +42,10 @@ class CategoryController extends Controller
         }
         $_SESSION['chain'] = $tmpSs;
         $categories = Category::where('category_id','=',$category->id)->get();
-        // dd($category->id);
-        return view('category.index',['categories'=> $categories,'chain'=>$_SESSION['chain']]);
+        $items = Item::where('category_id', '=', $category->id)->get();
+        
+        return view('category.index',['categories'=> $categories,'items'=> $items,'chain'=>$_SESSION['chain']]);
+        
     }
     /**
      * Show the form for creating a new resource.
@@ -95,7 +96,6 @@ class CategoryController extends Controller
         $parameters = Parameter::all();
         $categories = Category::where('id', '!=', $category->id)->get();
         return view('category.edit',['category'=> $category, 'parameters'=> $parameters, 'categories'=> $categories]);
-        
     }
 
     /**
@@ -110,9 +110,12 @@ class CategoryController extends Controller
         $category->name = $request->name;
         $category->category_id = $request->category_id;
         $category->save();
-        foreach ($request->parameters as $parameter) {
-            $category->parameters()->attach($parameter);
+        if ($request->filled('parameters')) {
+            foreach ($request->parameters as $parameter) {
+                $category->parameters()->attach($parameter);
+            }
         }
+
         return redirect()->route('category.index')->with('success_message', 'Sekmingai pakeistas.');
 
     }
@@ -125,6 +128,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->back();
     }
 }

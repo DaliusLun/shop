@@ -20,12 +20,15 @@
                                 $categoryId = $chain[count($chain) -1]->id;
                             }
                         @endphp
+
                         <input type="hidden" name="category_id" value="{{$categoryId}}">
                         <button type="submit">Pridėti</button>
                     </form>
+
                     @if(count($chain) > 0)
-                        <a style="font-size:15px" href="{{route('item.create',[$chain[count($chain)-1]]->id)}}">Įdėti prekę į "{{$chain[count($chain)-1]->name}}" kategoriją</a>
+                        <a style="font-size:15px" href="{{route('item.create',[$chain[count($chain)-1]])}}">Įdėti prekę į "{{$chain[count($chain)-1]->name}}" kategoriją</a>
                     @endif
+
                 </div>
             </div>
        </div>
@@ -79,7 +82,49 @@
            </div>
        </div>
    </div>
+<!-- // nuo cia -->
 
+@if(count($chain) > 0) 
 
+   <div class="row justify-content-center">
+       <div class="col-md-8">
+           <div class="card">
+
+               <div class="card-header">Prekės</div>
+
+               <div class="card-body">
+               <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">Pavadinimas</th>
+                        @if(Auth::user() && Auth::user()->isAdmin())
+                        <th scope="col" style="text-align:center">Veiksmai</th>
+                        @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($items as $item)
+                        <tr>
+                        <th scope="row">{{$item->name}}</th>
+                        @if(Auth::user() && Auth::user()->isAdmin()) 
+                        <td style="text-align:center">
+                            <a href="{{route('item.show',[$item])}}"><button class="btn btn-primary">Show</button></a>
+                            <a href="{{route('item.edit',[$item,$chain[count($chain)-1]])}}"><button class="btn btn-primary">Koreguoti</button></a>
+                            <form style="display:inline-block" method="POST" action="{{route('item.destroy', [$item])}}">
+                                @csrf
+                                <button class="btn btn-danger" type="submit" >Pašalinti</button>
+                            </form>
+                        </td>
+                        @endif
+                        </tr>
+                        @endforeach
+                    </tbody>
+                    </table>
+               </div>
+           </div>
+       </div>
+   </div>
+
+   @endif
 </div>
 @endsection

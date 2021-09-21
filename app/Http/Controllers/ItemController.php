@@ -116,9 +116,15 @@ class ItemController extends Controller
      * @param  \App\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Item $item)
+    public function destroy(Request $request, Item $item)
     {
+        foreach ($item->parameters as $parameter) {
+            $iP =  ItemParameter::where("item_id",'=', $item->id)
+            ->where("parameter_id",'=', $parameter->id)->first();
+            $iP->data = $request->input($parameter->id);
+            $iP->delete();
+        }
         $item->delete();
-        return redirect()->back();
+        return redirect()->back()->with('success_message', 'Prekė sėkmingai pašalinta.');;
     }
 }

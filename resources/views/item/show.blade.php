@@ -1,46 +1,41 @@
-
-
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
-   <div class="row justify-content-center">
-       <div class="col-md-8">
-           <div class="card">
-               <div class="card-header">Prekė</div>
-               <div class="card-body">
-               <table class="table">
-
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Prekė</div>
+                <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <a style="font-size:30px;font-weight:500;">{{$item->name}}</a>
+                        <tr>
+                            <th scope="row">Kaina</th>
+                            <th scope="row">{{$item->price}}</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         <tr>
-                            <th scope="row">Pavadinimas</a></th>
-                            <th scope="row">{{$item->name}}</a></th>
+                            <td scope="row">Nuolaida</td>
+                            <td scope="row">{{$item->discount}}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Kaina</a></th>
-                            <th scope="row">{{$item->price}}</a></th>
-                        </tr>
-                        <tr>
-                            <th scope="row">Nuolaida</a></th>
-                            <th scope="row">{{$item->discount}}</a></th>
-                        </tr>
-                        <tr>
-                            <th scope="row">Aprašymas</a></th>
-                            <th scope="row">{{$item->description}}</a></th>
+                            <td scope="row">Aprašymas</td>
+                            <td scope="row">{{$item->description}}</td>
                         </tr>
                         @foreach ($item->parameters as $parameter)
-                            <br>
                             <tr>
-                                <th scope="row">{{$parameter->title}}</a></th>
-                                <th scope="row">{{$parameter->pivot->data}} {{$parameter->data_type}}</a></th>
+                                <td scope="row">{{$parameter->title}}</td>
+                                <td scope="row">{{$parameter->pivot->data}} {{$parameter->data_type}}</td>
                             </tr>
                         @endforeach
                     </tbody>
-                    </table>
-               </div>
-           </div>
-       </div>
-   </div>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @endsection

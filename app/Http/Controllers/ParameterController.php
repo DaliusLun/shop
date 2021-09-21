@@ -40,7 +40,7 @@ class ParameterController extends Controller
         $parameter->title = $request->title;
         $parameter->data_type = $request->data_type;
         $parameter->save();
-        return redirect()->route('parameter.index')->with('success_message', 'Sekmingai įrašytas.');
+        return redirect()->route('parameter.index')->with('success_message', 'Parametras sėkmingai įrašytas.');
     }
 
     /**
@@ -62,7 +62,7 @@ class ParameterController extends Controller
      */
     public function edit(Parameter $parameter)
     {
-        //
+        return view('parameters.edit',['parameter' => $parameter]);
     }
 
     /**
@@ -74,7 +74,12 @@ class ParameterController extends Controller
      */
     public function update(Request $request, Parameter $parameter)
     {
-        //
+        $parameter->title = $request->title;
+        $parameter->data_type = $request->data_type;
+        $parameter->save();
+
+        return redirect()->route('parameter.index')->with('success_message', 'Parametras sėkmingai pakoreguotas.');
+
     }
 
     /**
@@ -86,7 +91,7 @@ class ParameterController extends Controller
     public function destroy(Parameter $parameter)
     {
         $parameter->delete();
-        return redirect()->route('parameter.index')->with('success_message', 'Sekmingai ištrintas.');
+        return redirect()->route('parameter.index')->with('success_message', 'Parametras sėkmingai ištrintas.');
 
     }
 }

@@ -11,7 +11,6 @@
                      <div class="form-group">
                         <label>Pavadinimas</label>
                         <input type="text" name="name"  class="form-control" value="{{$category->name}}">
-                        <small class="form-text text-muted">Kategorijos pavadinimas.</small>
                      </div>
                      <div class="form-group">
                         <label>Tėvinė kategorija</label>
@@ -20,24 +19,23 @@
                               Be kategorijos
                            </option>
                            @foreach ($categories as $categoriesOne)
-                              <option value="{{$categoriesOne->id}}"> 
+                              <option <?php echo $categoriesOne->id === $category->category_id ? 'selected':''?> value="{{$categoriesOne->id}}"> 
                                  {{$categoriesOne->name}}
                               </option>
                            @endforeach
                         </select>
                         <small class="form-text text-muted">Pasirinkite tėvinę kategoriją.</small>
                      </div>
-
                      <div class="form-group">
                         <label>Priskiriami parametrai</label>
                         <select class="form-control" name="parameters[]" multiple>
                            @foreach ($parameters as $parameter)
-                              <option value="{{$parameter->id}}"> 
+                              <option <?php echo in_array($parameter->id, $ctParams) == $category->parameters ? 'selected':''?> value="{{$parameter->id}}"> 
                                  {{$parameter->title}} {{$parameter->data_type}}
                               </option>
                            @endforeach
                         </select>
-                        <small class="form-text text-muted">Pasirinkite augalo rūšį.</small>
+                        <small class="form-text text-muted">Pasirinkite parametrus, kurie bus priskirti šiai kategorijai.</small>
                      </div>
                      @csrf
                      <br>

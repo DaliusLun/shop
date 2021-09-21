@@ -27,7 +27,7 @@ Auth::routes();
 Route::group(['prefix' => 'categories'], function(){
     Route::get('', [CategoryController::class, 'index'])->name('category.index');
     Route::get('map/{category}', [CategoryController::class, 'map'])->name('category.map');
-    Route::get('create', [CategoryController::class, 'create'])->name('category.create');
+    Route::get('create/{id}', [CategoryController::class, 'create'])->name('category.create');
     Route::post('store', [CategoryController::class, 'store'])->name('category.store');
     Route::get('edit/{category}', [CategoryController::class, 'edit'])->name('category.edit');
     Route::post('update/{category}', [CategoryController::class, 'update'])->name('category.update');

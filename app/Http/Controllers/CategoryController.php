@@ -10,7 +10,6 @@ use App\Models\CategoryParameter;
 
 class CategoryController extends Controller
 {
-
     public function __construct()
     {
         session_start();
@@ -45,16 +44,16 @@ class CategoryController extends Controller
         $items = Item::where('category_id', '=', $category->id)->get();
         
         return view('category.index',['categories'=> $categories,'items'=> $items,'chain'=>$_SESSION['chain']]);
-        
     }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($categoryId)
     {
-        //
+        $parameters = Parameter::all();
+        return view('category.create',['categoryId'=> $categoryId, 'parameters'=> $parameters]);
     }
 
     /**
@@ -71,7 +70,19 @@ class CategoryController extends Controller
             $category->category_id = $request->category_id;
         }
         $category->save();
-        return redirect()->back();
+
+        if ($request->filled('parameters')) {
+            foreach ($request->parameters as $parameter) {
+                $category->parameters()->attach($parameter);
+            }
+        }
+
+        if ($request->category_id =="0") {
+            return redirect()->route('category.index')->with('success_message', 'Kategorija sėkmingai įrašyta.');
+        } else {
+            return redirect()->route('category.map',$request->category_id)->with('success_message', 'Kategorija sėkmingai įrašyta.');
+        }
+
     }
 
     /**
@@ -95,7 +106,14 @@ class CategoryController extends Controller
     {
         $parameters = Parameter::all();
         $categories = Category::where('id', '!=', $category->id)->get();
-        return view('category.edit',['category'=> $category, 'parameters'=> $parameters, 'categories'=> $categories]);
+        $categoryParameters = CategoryParameter::where('category_id', '=', $category->id)->get();
+        $ctParams = [];
+
+        foreach ($categoryParameters as $ctParam) {
+            $ctParams[] = $ctParam->parameter_id;
+        }
+
+        return view('category.edit',['category'=> $category, 'parameters'=> $parameters, 'categories'=> $categories, 'ctParams'=> $ctParams]);
     }
 
     /**
@@ -110,14 +128,18 @@ class CategoryController extends Controller
         $category->name = $request->name;
         $category->category_id = $request->category_id;
         $category->save();
+        foreach ($category->parameters as $parameter) {
+            $iP =  CategoryParameter::where('category_id', '=', $category->id)
+            ->where("parameter_id",'=', $parameter->id)->first();
+            // $iP->data = $request->input($parameter->id);
+            $iP->delete();
+        }
         if ($request->filled('parameters')) {
             foreach ($request->parameters as $parameter) {
                 $category->parameters()->attach($parameter);
             }
         }
-
-        return redirect()->route('category.index')->with('success_message', 'Sekmingai pakeistas.');
-
+        return redirect()->route('category.map',$request->category_id)->with('success_message', 'Kategorija sėkmingai atnaujinta.');
     }
 
     /**
@@ -126,9 +148,22 @@ class CategoryController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request, Category $category)
     {
+
+        $categoryParameters = CategoryParameter::where('category_id', '=', $category->id)->get();
+
+        // $categoryParameters[0]->delete();
+
+        foreach ($category->parameters as $parameter) {
+            $iP =  CategoryParameter::where('category_id', '=', $category->id)
+            ->where("parameter_id",'=', $parameter->id)->first();
+            // $iP->data = $request->input($parameter->id);
+            $iP->delete();
+        }
+
+
         $category->delete();
-        return redirect()->back();
+        return redirect()->back()->with('success_message', 'Kategorija sėkmingai pašalinta.');
     }
 }

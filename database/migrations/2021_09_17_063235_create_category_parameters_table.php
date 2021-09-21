@@ -14,12 +14,12 @@ class CreateCategoryParametersTable extends Migration
     public function up()
     {
         Schema::create('category_parameters', function (Blueprint $table) {
-
+            $table->id();
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->unsignedBigInteger('parameter_id');
             $table->foreign('parameter_id')->references('id')->on('parameters');
-            $table->primary(['category_id','parameter_id']);
+            // $table->primary(['category_id','parameter_id']);
             $table->timestamps();
         });
     }

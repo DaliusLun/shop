@@ -6,7 +6,7 @@
 
     @if(Auth::user() && Auth::user()->isAdmin()) 
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">Admin dashboard</div>
                     <div class="card-body">
@@ -34,23 +34,25 @@
     @endif
 
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-lg-12">
             <div class="card">
                 @if (count($chain) > 0)
                     <div class="card-header">
                         <h1>{{(count($chain) > 0)?$chain[count($chain)-1]->name:""}}</h1>
                     </div>
                 @endif
-
                 <div class="card-header">
                     <a href="{{route('category.index')}}">HOME</a><br>
                     @foreach ($chain as $item)
-                        <a href="{{route('category.map',$item)}}">{{$item->name}} > </a>
+                        @if(next($chain))
+                            <a class="chain" href="{{route('category.map',$item)}}">{{$item->name}} ></a>
+                        @else
+                            <a class="chain chain-last" href="{{route('category.map',$item)}}">{{$item->name}}</a>
+                        @endif
                     @endforeach
                 </div>
-
-               <div class="card-body">
-                <table class="table">
+                <div class="card-body">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th scope="col">Pavadinimas</th>
@@ -62,10 +64,14 @@
                         <tbody>
                             @foreach ($categories as $category)
                                 <tr>
-                                    <th scope="row"><a href="{{route('category.map',$category)}}">{{$category->name}}</a></th>
+                                    <th scope="row">
+                                        <a href="{{route('category.map',$category)}}">{{$category->name}}</a>
+                                    </th>
                                     @if(Auth::user() && Auth::user()->isAdmin()) 
                                         <td style="text-align:center">
-                                            <a href="{{route('category.edit',[$category])}}"><button class="btn btn-primary">Koreguoti</button></a>
+                                            <a href="{{route('category.edit',[$category])}}">
+                                                <button class="btn btn-primary">Koreguoti</button>
+                                            </a>
                                         @if(Auth::user())
                                             <form style="display:inline-block" method="POST" action="{{route('category.destroy', [$category])}}">
                                                 @csrf
@@ -86,7 +92,7 @@
     @if(count($chain) > 0 && count($items) > 0) 
 
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">Prekės</div>
                     <div class="card-body">

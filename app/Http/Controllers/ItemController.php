@@ -48,6 +48,7 @@ class ItemController extends Controller
         $item->name = $request->name;
         $item->price = $request->price;
         $item->description = $request->description;
+        $item->manufacturer = $request->manufacturer;
         $item->quantity = $request->quantity;
         $item->category_id = $request->category_id;
         $item->discount = $request->discount;

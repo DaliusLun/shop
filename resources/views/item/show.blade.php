@@ -21,6 +21,10 @@
                             <td scope="row">{{$item->discount}}</td>
                         </tr>
                         <tr>
+                            <td scope="row">Gamintojas</td>
+                            <td scope="row">{{$item->manufacturer}}</td>
+                        </tr>
+                        <tr>
                             <td scope="row">Aprašymas</td>
                             <td scope="row">{{$item->description}}</td>
                         </tr>

@@ -1,0 +1,17 @@
+@import url(https://fonts.googleapis.com/css?family=Nunito);
+.chain {
+  text-decoration: none;
+  font-family: "Trebuchet MS", "Times New Roman", Times, serif;
+  color: #000 !important;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: black;
+}
+
+.chain:hover {
+  text-decoration: underline;
+}
+
+.chain-last {
+  font-weight: bold;
+}

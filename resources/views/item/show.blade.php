@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Prekė</div>
+                <div class="card-header"><a href="javascript:history.back()">< Grįžti atgal</a></div>
                 <div class="card-body">
                 <table class="table">
                     <thead>

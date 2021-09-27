@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('content')
@@ -31,8 +30,8 @@
                 </div>
             </div>
         </div>
+        <br>
     @endif
-
     <div class="row justify-content-center">
         <div class="col-lg-12">
             <div class="card">
@@ -45,50 +44,77 @@
                     <a href="{{route('category.index')}}">HOME</a><br>
                     @foreach ($chain as $item)
                         @if(next($chain))
-                            <a class="chain" href="{{route('category.map',$item)}}">{{$item->name}} ></a>
+                            <a class="chain" href="{{route('category.map',$item)}}">{{$item->name}}</a> >
                         @else
                             <a class="chain chain-last" href="{{route('category.map',$item)}}">{{$item->name}}</a>
                         @endif
                     @endforeach
                 </div>
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Pavadinimas</th>
-                                @if(Auth::user() && Auth::user()->isAdmin())
-                                    <th scope="col" style="text-align:center">Veiksmai</th>
-                                @endif
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($categories as $category)
+                @if(count($categories)>0)
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <th scope="row">
-                                        <a href="{{route('category.map',$category)}}">{{$category->name}}</a>
-                                    </th>
-                                    @if(Auth::user() && Auth::user()->isAdmin()) 
-                                        <td style="text-align:center">
-                                            <a href="{{route('category.edit',[$category])}}">
-                                                <button class="btn btn-primary">Koreguoti</button>
-                                            </a>
-                                        @if(Auth::user())
-                                            <form style="display:inline-block" method="POST" action="{{route('category.destroy', [$category])}}">
-                                                @csrf
-                                                <button class="btn btn-danger" type="submit" >Pašalinti</button>
-                                            </form>
-                                        @endif
-                                        </td>
+                                    <th scope="col">Pavadinimas</th>
+                                    @if(Auth::user() && Auth::user()->isAdmin())
+                                        <th scope="col" style="text-align:center">Veiksmai</th>
                                     @endif
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                @foreach ($categories as $category)
+                                    <tr>
+                                        <th scope="row">
+                                            <a href="{{route('category.map',$category)}}">{{$category->name}}</a>
+                                        </th>
+                                        @if(Auth::user() && Auth::user()->isAdmin()) 
+                                            <td style="text-align:center">
+                                                <a href="{{route('category.edit',[$category])}}">
+                                                    <button class="btn btn-primary">Koreguoti</button>
+                                                </a>
+                                            @if(Auth::user())
+                                                <form style="display:inline-block" method="POST" action="{{route('category.destroy', [$category])}}">
+                                                    @csrf
+                                                    <button class="btn btn-danger" type="submit">Pašalinti</button>
+                                                </form>
+                                            @endif
+                                            </td>
+                                        @endif
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 
+
+    @if(count($chain) > 0 && count($items) > 0) 
+        <div class="item-container">
+            @foreach ($items as $item)
+                <div class="item">
+                    <a href="{{route('item.show',[$item])}}">
+                        @if($item->discount>0)
+                            <div class="item__sale">%</div>
+                        @endif
+                        <div class="item__name">{{$item->name}}</div>
+                        <div class="item__photo"></div>
+                        @if($item->discount>0)
+                            <div class="item__price discount">{{$item->price}} €</div>
+                            <div class="item__price with-discount">{{$item->price - $item->discount}} €</div>
+                        @else
+                            <div class="item__price">{{$item->price - $item->discount}} €</div>
+                        @endif
+
+                    </a>
+                </div>
+            @endforeach
+        </div>
+        
+    @endif
+<!-- 
     @if(count($chain) > 0 && count($items) > 0) 
 
         <div class="row justify-content-center">
@@ -131,6 +157,14 @@
                 </div>
             </div>
         </div>
+    @endif -->
+    
+    @if(count($categories)==0 && count($items)==0)
+        <br>
+        <h3>Atsiprašome, šioje kategorijoje prekių nėra</h3>
+        <a href="javascript:history.back()">< Grįžti atgal</a>
     @endif
+
+
 </div>
 @endsection
